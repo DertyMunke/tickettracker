@@ -36,6 +36,7 @@ namespace TicketTracker.Controllers
         }
 
         // GET: Tickets/Create
+        [Authorize(Roles = "admin")]
         public ActionResult Create()
         {
             return View();
@@ -46,6 +47,7 @@ namespace TicketTracker.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public ActionResult Create([Bind(Include = "TicketID,Title,Description,TicketTypeId,TicketStatus,CreatorEmail,ResolverEmail")] Ticket ticket)
         {
             if (ModelState.IsValid)
@@ -59,6 +61,7 @@ namespace TicketTracker.Controllers
         }
 
         // GET: Tickets/Edit/5
+        [Authorize(Roles = "admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -78,6 +81,7 @@ namespace TicketTracker.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public ActionResult Edit([Bind(Include = "TicketID,Title,Description,TicketTypeId,TicketStatus,CreatorEmail,ResolverEmail")] Ticket ticket)
         {
             if (ModelState.IsValid)
@@ -90,6 +94,7 @@ namespace TicketTracker.Controllers
         }
 
         // GET: Tickets/Delete/5
+        [Authorize(Roles = "admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -107,6 +112,7 @@ namespace TicketTracker.Controllers
         // POST: Tickets/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public ActionResult DeleteConfirmed(int id)
         {
             Ticket ticket = db.Tickets.Find(id);
