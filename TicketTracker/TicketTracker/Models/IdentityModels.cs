@@ -29,5 +29,7 @@ namespace TicketTracker.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<TicketTracker.Models.Ticket> Tickets { get; set; }
     }
 }
