@@ -13,7 +13,7 @@ namespace TicketTracker.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201608012210411_Initial"; }
+            get { return "201608022052215_Initial"; }
         }
         
         string IMigrationMetadata.Source

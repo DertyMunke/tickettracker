@@ -36,7 +36,7 @@ namespace TicketTracker.Controllers
         }
 
         // GET: Tickets/Create
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, user")]
         public ActionResult Create()
         {
             return View();
@@ -47,8 +47,8 @@ namespace TicketTracker.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "admin")]
-        public ActionResult Create([Bind(Include = "TicketID,Title,Description,TicketTypeId,TicketStatus,CreatorEmail,ResolverEmail")] Ticket ticket)
+        [Authorize(Roles = "admin, user")]
+        public ActionResult Create([Bind(Include = "TicketID,Title,Description,TicketStatus,CreatorEmail,ResolverEmail")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
@@ -82,7 +82,7 @@ namespace TicketTracker.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "admin")]
-        public ActionResult Edit([Bind(Include = "TicketID,Title,Description,TicketTypeId,TicketStatus,CreatorEmail,ResolverEmail")] Ticket ticket)
+        public ActionResult Edit([Bind(Include = "TicketID,Title,Description,TicketStatus,CreatorEmail,ResolverEmail")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {

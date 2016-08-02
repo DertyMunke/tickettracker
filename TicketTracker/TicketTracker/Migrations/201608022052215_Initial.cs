@@ -37,8 +37,7 @@ namespace TicketTracker.Migrations
                         TicketID = c.Int(nullable: false, identity: true),
                         Title = c.String(nullable: false),
                         Description = c.String(nullable: false),
-                        TicketTypeId = c.Int(nullable: false),
-                        TicketStatus = c.Int(nullable: false),
+                        Status = c.Int(nullable: false),
                         CreatorEmail = c.String(),
                         ResolverEmail = c.String(),
                     })

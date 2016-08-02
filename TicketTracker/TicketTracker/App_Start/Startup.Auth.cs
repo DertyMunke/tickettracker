@@ -58,11 +58,11 @@ namespace TicketTracker
             //   appId: "",
             //   appSecret: "");
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = "740832523397-kjka9dk12sturvu6ccu8hsplo2a6cco6.apps.googleusercontent.com",
+                ClientSecret = "EHHGTxt8MKFBbUli5eB7OMRX"
+            });
         }
     }
 }

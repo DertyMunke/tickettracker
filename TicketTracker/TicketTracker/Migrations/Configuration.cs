@@ -20,12 +20,22 @@ namespace TicketTracker.Migrations
         /// </summary>
         bool AddUserAndRole(TicketTracker.Models.ApplicationDbContext context)
         {
+            // Add the login user type -> user
             IdentityResult ir;
             var rm = new RoleManager<IdentityRole>
                 (new RoleStore<IdentityRole>(context));
-            ir = rm.Create(new IdentityRole("admin"));
+            ir = rm.Create(new IdentityRole("user"));
             var um = new UserManager<ApplicationUser>(
                 new UserStore<ApplicationUser>(context));
+
+            // Add the login user type -> admin
+            rm = new RoleManager<IdentityRole>
+                (new RoleStore<IdentityRole>(context));
+            ir = rm.Create(new IdentityRole("admin"));
+            um = new UserManager<ApplicationUser>(
+                new UserStore<ApplicationUser>(context));
+
+            // Create an admin account
             var user = new ApplicationUser()
             {
                 UserName = "admin1@email.com",
@@ -42,7 +52,7 @@ namespace TicketTracker.Migrations
         /// </summary>
         protected override void Seed(TicketTracker.Models.ApplicationDbContext context)
         {
-            // Adds an admin user to the web app
+            // Adds an admin user to the web app and creates user roles
             AddUserAndRole(context);
 
             //  This method will be called after migrating to the latest version.
@@ -51,7 +61,7 @@ namespace TicketTracker.Migrations
                 {
                     Title = "Broken",
                     Description = "The whole thing broke.",
-                    TicketStatus = TicketTypes.active,
+                    Status = TicketTypes.active,
                     CreatorEmail = "a@email.com",
                     ResolverEmail = "",
                 },
@@ -59,7 +69,7 @@ namespace TicketTracker.Migrations
                 {
                     Title = "The thing",
                     Description = "It did stuff.",
-                    TicketStatus = TicketTypes.resolved,
+                    Status = TicketTypes.resolved,
                     CreatorEmail = "b@email.com",
                     ResolverEmail = "c@email.com",
                 },
@@ -67,7 +77,7 @@ namespace TicketTracker.Migrations
                 {
                     Title = "Gears",
                     Description = "There is no more grease on the gears.",
-                    TicketStatus = TicketTypes.active,
+                    Status = TicketTypes.active,
                     CreatorEmail = "d@email.com",
                     ResolverEmail = "",
                 },
@@ -75,7 +85,7 @@ namespace TicketTracker.Migrations
                 {
                     Title = "Crashing",
                     Description = "The login keeps crashing.",
-                    TicketStatus = TicketTypes.resolved,
+                    Status = TicketTypes.resolved,
                     CreatorEmail = "e@email.com",
                     ResolverEmail = "b@email.com",
                 }

@@ -29,19 +29,8 @@ namespace TicketTracker.Models
         /// Ticket status active/resolved
         /// </summary>
         [Required]
-        public virtual int TicketTypeId
-        {
-            get
-            {
-                return (int)TicketStatus;
-            }
-            set
-            {
-                TicketStatus = (TicketTypes)value;
-            }
-        }
         [EnumDataType(typeof(TicketTypes))]
-        public TicketTypes TicketStatus { get; set; }
+        public TicketTypes Status { get; set; }
 
         /// <summary>
         /// Ticket creators email for inquiries
