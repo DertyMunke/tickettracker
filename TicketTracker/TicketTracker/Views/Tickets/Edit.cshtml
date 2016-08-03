@@ -33,15 +33,40 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <dl class="noedit">
+            <dt>
+                @Html.DisplayNameFor(model => model.Status)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Status)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.CreatorEmail)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.CreatorEmail)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.ResolverEmail)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ResolverEmail)
+            </dd>
+        </dl>
+        @*<div class="form-group">
             @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>*@
 
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.LabelFor(model => model.CreatorEmail, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.CreatorEmail, new { htmlAttributes = new { @class = "form-control" } })
@@ -55,7 +80,7 @@
                 @Html.EditorFor(model => model.ResolverEmail, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.ResolverEmail, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>*@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

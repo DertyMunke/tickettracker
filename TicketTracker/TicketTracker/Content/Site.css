@@ -16,9 +16,18 @@
     white-space: normal;
 }
 
+/* Set the size of active/resolved buttons */
+.type-btn{
+    min-width: 100px;
+}
+
 /* Set width on the form input elements since they're 100% wide by default */
 input,
 select,
 textarea {
     max-width: 280px;
+}
+
+.noedit dd{
+    margin-bottom: 20px;
 }

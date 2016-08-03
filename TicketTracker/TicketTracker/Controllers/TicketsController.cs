@@ -6,7 +6,9 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using TicketTracker.Models;
+using Microsoft.AspNet.Identity;
 
 namespace TicketTracker.Controllers
 {
@@ -119,6 +121,50 @@ namespace TicketTracker.Controllers
             db.Tickets.Remove(ticket);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        // GET: Tickets/Resolve/5
+        [Authorize(Roles = "admin")]
+        public ActionResult Resolve(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Ticket ticket = db.Tickets.Find(id);
+            if (ticket == null)
+            {
+                return HttpNotFound();
+            }
+
+            ticket.Status = TicketTypes.resolved;
+            ticket.ResolverEmail = User.Identity.GetUserName();
+
+            db.Entry(ticket).State = EntityState.Modified;
+            db.SaveChanges();
+            return View("Details", ticket);
+        }
+
+        // GET: Tickets/Resolve/5
+        [Authorize(Roles = "admin")]
+        public ActionResult Active(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Ticket ticket = db.Tickets.Find(id);
+            if (ticket == null)
+            {
+                return HttpNotFound();
+            }
+
+            ticket.Status = TicketTypes.active;
+            ticket.ResolverEmail = User.Identity.GetUserName();
+
+            db.Entry(ticket).State = EntityState.Modified;
+            db.SaveChanges();
+            return View("Details", ticket);
         }
 
         protected override void Dispose(bool disposing)

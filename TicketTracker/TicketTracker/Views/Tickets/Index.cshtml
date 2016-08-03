@@ -1,10 +1,30 @@
 ﻿@model IEnumerable<TicketTracker.Models.Ticket>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Tickets";
+
+    // Gets the active or resolved parameter or inits the variable if null
+    string ticketType = Request.Params["type"];
+    if(ticketType == null)
+    {
+        ticketType = "Active";
+    }
 }
 
-<h2>Index</h2>
+<h2>@ticketType Tickets</h2>
+
+@{ 
+    // Switches ticket type for parameter passing with the following form
+    if (ticketType != null)
+    {
+        ticketType = ticketType.Equals("Active") ? "Resolved" : "Active";
+    }
+}
+
+<form class="type-btn" method="get" action="">
+    <input type="hidden" name="type" value=@ticketType />
+    <input type="submit" class="btn btn-primary type-btn" value=@ticketType />
+</form><br><br/>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -29,29 +49,45 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Status)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreatorEmail)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ResolverEmail)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.TicketID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.TicketID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.TicketID })
-        </td>
-    </tr>
+@foreach (var item in Model)
+{
+    if ((ticketType.Equals("Resolved") && item.Status == TicketTracker.Models.TicketTypes.active) ||
+        (ticketType.Equals("Active") && item.Status == TicketTracker.Models.TicketTypes.resolved))
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatorEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ResolverEmail)
+            </td>
+            @if(User.IsInRole("admin")) // Only show these buttons if user role is admin
+            {
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.TicketID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.TicketID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.TicketID }) |
+                    @if (ticketType.Equals("Resolved")) // Determines which link to show
+                    {
+                        @Html.ActionLink("Resolve", "Resolve", new { id = item.TicketID })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Active", "Active", new { id = item.TicketID })
+                    }
+                </td>
+            }
+        </tr>
+    }
 }
 
 </table>
