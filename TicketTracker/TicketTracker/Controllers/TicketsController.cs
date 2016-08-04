@@ -6,7 +6,6 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
 using TicketTracker.Models;
 using Microsoft.AspNet.Identity;
 
@@ -50,10 +49,16 @@ namespace TicketTracker.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "admin, user")]
-        public ActionResult Create([Bind(Include = "TicketID,Title,Description,TicketStatus,CreatorEmail,ResolverEmail")] Ticket ticket)
+        public ActionResult Create([Bind(Include = "TicketID,Severity,Title,Description,Status,Creator,Created,Modifier,Modified")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
+                ticket.Status = TicketTypes.active;
+                ticket.Creator = User.Identity.GetUserName();
+                ticket.Created = DateTime.Now.Date;
+                ticket.Modifier = "";
+                ticket.Modified = null;
+
                 db.Tickets.Add(ticket);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -84,10 +89,13 @@ namespace TicketTracker.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "admin")]
-        public ActionResult Edit([Bind(Include = "TicketID,Title,Description,TicketStatus,CreatorEmail,ResolverEmail")] Ticket ticket)
+        public ActionResult Edit([Bind(Include = "TicketID,Severity,Title,Description,Status,Creator,Created,Modifier,Modified")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
+                ticket.Modifier = User.Identity.GetUserName();
+                ticket.Modified = DateTime.Now.Date;
+
                 db.Entry(ticket).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -138,7 +146,8 @@ namespace TicketTracker.Controllers
             }
 
             ticket.Status = TicketTypes.resolved;
-            ticket.ResolverEmail = User.Identity.GetUserName();
+            ticket.Modifier = User.Identity.GetUserName();
+            ticket.Modified = DateTime.Now.Date;
 
             db.Entry(ticket).State = EntityState.Modified;
             db.SaveChanges();
@@ -160,7 +169,8 @@ namespace TicketTracker.Controllers
             }
 
             ticket.Status = TicketTypes.active;
-            ticket.ResolverEmail = User.Identity.GetUserName();
+            ticket.Modifier = User.Identity.GetUserName();
+            ticket.Modified = DateTime.Now.Date;
 
             db.Entry(ticket).State = EntityState.Modified;
             db.SaveChanges();
@@ -177,3 +187,4 @@ namespace TicketTracker.Controllers
         }
     }
 }
+

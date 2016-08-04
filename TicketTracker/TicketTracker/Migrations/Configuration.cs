@@ -12,7 +12,7 @@ namespace TicketTracker.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         /// <summary>
@@ -60,35 +60,48 @@ namespace TicketTracker.Migrations
             context.Tickets.AddOrUpdate(p => p.Title,
                 new Ticket
                 {
+                    Severity = SeverityTypes.High,
                     Title = "Broken",
                     Description = "The whole thing broke.",
                     Status = TicketTypes.active,
-                    CreatorEmail = "a@email.com",
-                    ResolverEmail = "",
+                    Creator = "a@email.com",
+                    Created = new DateTime(2016, 6, 19),
+                    Modifier = "",
+                    Modified = null,
                 },
                 new Ticket
                 {
+                    Severity = SeverityTypes.Low,
                     Title = "The thing",
                     Description = "It did stuff.",
                     Status = TicketTypes.resolved,
-                    CreatorEmail = "b@email.com",
-                    ResolverEmail = "c@email.com",
+                    Creator = "b@email.com",
+                    Created = new DateTime(2016, 1, 4),
+                    Modifier = "c@email.com",
+                    Modified = new DateTime(2016, 2, 11),
                 },
                 new Ticket
                 {
+                    Severity = SeverityTypes.Critical,
                     Title = "Gears",
                     Description = "There is no more grease on the gears.",
                     Status = TicketTypes.active,
-                    CreatorEmail = "d@email.com",
-                    ResolverEmail = "",
+                    Creator = "d@email.com",
+                    Created = new DateTime(2015, 4, 19),
+                    Modifier = "",
+                    Modified = null,
+
                 },
                 new Ticket
                 {
+                    Severity = SeverityTypes.Medium,
                     Title = "Crashing",
                     Description = "The login keeps crashing.",
                     Status = TicketTypes.resolved,
-                    CreatorEmail = "e@email.com",
-                    ResolverEmail = "b@email.com",
+                    Creator = "e@email.com",
+                    Created = new DateTime(2016, 1, 19),
+                    Modifier = "b@email.com",
+                    Modified = new DateTime(2016, 3, 19),
                 }
 
                 );

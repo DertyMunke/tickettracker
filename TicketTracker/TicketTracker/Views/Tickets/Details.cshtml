@@ -11,6 +11,14 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
+            @Html.DisplayNameFor(model => model.Severity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Severity)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.Title)
         </dt>
 
@@ -35,19 +43,35 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.CreatorEmail)
+            @Html.DisplayNameFor(model => model.Creator)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.CreatorEmail)
+            @Html.DisplayFor(model => model.Creator)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ResolverEmail)
+            @Html.DisplayNameFor(model => model.Created)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ResolverEmail)
+            @Html.DisplayFor(model => model.Created)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Modifier)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Modifier)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Modified)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Modified)
         </dd>
 
     </dl>

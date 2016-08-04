@@ -35,11 +35,14 @@ namespace TicketTracker.Migrations
                 c => new
                     {
                         TicketID = c.Int(nullable: false, identity: true),
+                        Severity = c.Int(nullable: false),
                         Title = c.String(nullable: false),
                         Description = c.String(nullable: false),
                         Status = c.Int(nullable: false),
-                        CreatorEmail = c.String(),
-                        ResolverEmail = c.String(),
+                        Creator = c.String(),
+                        Created = c.DateTime(nullable: false),
+                        Modifier = c.String(),
+                        Modified = c.DateTime(),
                     })
                 .PrimaryKey(t => t.TicketID);
             
