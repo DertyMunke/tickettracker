@@ -68,10 +68,26 @@ namespace TicketTracker.Models
     /// <summary>
     /// Ticket status
     /// </summary>
-    public enum TicketTypes { active, resolved }
+    public enum TicketTypes { Active, Resolved }
 
     /// <summary>
     /// Ticket severity
     /// </summary>
     public enum SeverityTypes { Low, Medium, High, Critical }
+
+    /// <summary>
+    /// Ticket column names 
+    /// </summary>
+    public enum TicketColumns
+    {
+        Id,
+        Severity,
+        Title,
+        Description,
+        Status,
+        Creator,
+        Created,
+        Modifier,
+        Modified
+    }
 }

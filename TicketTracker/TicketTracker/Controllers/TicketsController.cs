@@ -16,9 +16,56 @@ namespace TicketTracker.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Tickets
-        public ActionResult Index()
-        {
-            return View(db.Tickets.ToList());
+        public ActionResult Index(TicketColumns column = TicketColumns.Created, 
+            TicketSorting sortOrder = TicketSorting.CredAsc)
+        {       
+            var tickets = from t in db.Tickets select t;
+            ViewBag.Sorting = sortOrder;
+
+            // Sorts the Tickets according to the sorting option selected
+            switch (column)
+            {
+                case TicketColumns.Id:
+                    ViewBag.Sorting = sortOrder == TicketSorting.IdAsc ?
+                        TicketSorting.IdDsc : TicketSorting.IdAsc;
+                    tickets = ViewBag.Sorting == TicketSorting.IdDsc ?
+                        tickets.OrderBy(t => t.TicketID) : tickets.OrderByDescending(t => t.TicketID);
+                    break;
+                case TicketColumns.Severity:
+                    ViewBag.Sorting = sortOrder == TicketSorting.SevAsc ?
+                        TicketSorting.SevDsc : TicketSorting.SevAsc;
+                    tickets = ViewBag.Sorting == TicketSorting.SevDsc ?
+                        tickets.OrderBy(t => t.Severity) : tickets.OrderByDescending(t => t.Severity);
+                    break;
+                case TicketColumns.Creator:
+                    ViewBag.Sorting = sortOrder == TicketSorting.CrorAsc ?
+                        TicketSorting.CrorDsc : TicketSorting.CrorAsc;
+                    tickets = ViewBag.Sorting == TicketSorting.CrorDsc ?
+                        tickets.OrderBy(t => t.Creator) : tickets.OrderByDescending(t => t.Creator);
+                    break;
+                case TicketColumns.Created:
+                    ViewBag.Sorting = sortOrder == TicketSorting.CredAsc ?
+                        TicketSorting.CredDsc : TicketSorting.CredAsc;
+                    tickets = ViewBag.Sorting == TicketSorting.CredDsc ? 
+                        tickets.OrderBy(t => t.Created) : tickets.OrderByDescending(t => t.Created);
+                    break;
+                case TicketColumns.Modifier:
+                    ViewBag.Sorting = sortOrder == TicketSorting.MdorAsc ?
+                        TicketSorting.MdorDsc : TicketSorting.MdorAsc;
+                    tickets = ViewBag.Sorting == TicketSorting.MdorDsc ?
+                        tickets.OrderBy(t => t.Modifier) : tickets.OrderByDescending(t => t.Modifier);
+                    break;
+                case TicketColumns.Modified:
+                    ViewBag.Sorting = sortOrder == TicketSorting.MdedAsc ?
+                        TicketSorting.MdedDsc : TicketSorting.MdedAsc;
+                    tickets = ViewBag.Sorting == TicketSorting.MdedDsc ?
+                        tickets.OrderBy(t => t.Modified) : tickets.OrderByDescending(t => t.Modified);
+                    break;
+                default:
+                    tickets = tickets.OrderBy(t => t.Created);
+                    break;
+            }
+            return View(tickets.ToList());
         }
 
         // GET: Tickets/Details/5
@@ -53,7 +100,7 @@ namespace TicketTracker.Controllers
         {
             if (ModelState.IsValid)
             {
-                ticket.Status = TicketTypes.active;
+                ticket.Status = TicketTypes.Active;
                 ticket.Creator = User.Identity.GetUserName();
                 ticket.Created = DateTime.Now.Date;
                 ticket.Modifier = "";
@@ -145,7 +192,7 @@ namespace TicketTracker.Controllers
                 return HttpNotFound();
             }
 
-            ticket.Status = TicketTypes.resolved;
+            ticket.Status = TicketTypes.Resolved;
             ticket.Modifier = User.Identity.GetUserName();
             ticket.Modified = DateTime.Now.Date;
 
@@ -168,7 +215,7 @@ namespace TicketTracker.Controllers
                 return HttpNotFound();
             }
 
-            ticket.Status = TicketTypes.active;
+            ticket.Status = TicketTypes.Active;
             ticket.Modifier = User.Identity.GetUserName();
             ticket.Modified = DateTime.Now.Date;
 
@@ -185,6 +232,28 @@ namespace TicketTracker.Controllers
             }
             base.Dispose(disposing);
         }
+    }
+
+    /// <summary>
+    /// Allows switching for ascending and descending ticket order by categories
+    /// </summary>
+    public enum TicketSorting
+    {
+        none,
+        IdAsc,
+        IdDsc,
+        SevAsc,
+        SevDsc,
+        StaAsc,
+        StaDsc,
+        CrorAsc,
+        CrorDsc,
+        CredAsc,
+        CredDsc,
+        MdorAsc,
+        MdorDsc,
+        MdedAsc,
+        MdedDsc
     }
 }
 

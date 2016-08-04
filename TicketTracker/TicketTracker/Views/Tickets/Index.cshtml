@@ -1,4 +1,6 @@
 ﻿@model IEnumerable<TicketTracker.Models.Ticket>
+@using TicketTracker.Models;
+@using TicketTracker.Controllers;
 
 @{
     ViewBag.Title = "Tickets";
@@ -32,7 +34,10 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Severity)
+            @Html.ActionLink("ID", "Index", new { column = TicketColumns.Id, sortOrder = (TicketSorting)ViewBag.Sorting })
+        </th>
+        <th>
+            @Html.ActionLink("Severity", "Index", new { column = TicketColumns.Severity, sortOrder = (TicketSorting)ViewBag.Sorting })
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Title)
@@ -44,25 +49,28 @@
             @Html.DisplayNameFor(model => model.Status)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Creator)
+            @Html.ActionLink("Creator", "Index", new { column = TicketColumns.Creator, sortOrder = (TicketSorting)ViewBag.Sorting })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Created)
+            @Html.ActionLink("Created", "Index", new { column = TicketColumns.Created, sortOrder = (TicketSorting)ViewBag.Sorting })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Modifier)
+            @Html.ActionLink("Modifier", "Index", new { column = TicketColumns.Modifier, sortOrder = (TicketSorting)ViewBag.Sorting })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Modified)
+            @Html.ActionLink("Modified", "Index", new { column = TicketColumns.Modified, sortOrder = (TicketSorting)ViewBag.Sorting })
         </th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
-    if ((ticketType.Equals("Resolved") && item.Status == TicketTracker.Models.TicketTypes.active) ||
-    (ticketType.Equals("Active") && item.Status == TicketTracker.Models.TicketTypes.resolved))
+    if ((ticketType.Equals("Resolved") && item.Status == TicketTracker.Models.TicketTypes.Active) ||
+    (ticketType.Equals("Active") && item.Status == TicketTracker.Models.TicketTypes.Resolved))
     {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TicketID)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Severity)
             </td>
@@ -91,8 +99,8 @@
             @if (User.IsInRole("admin")) // Only show these buttons if user role is admin
             {
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.TicketID }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.TicketID }) |
+                    @Html.ActionLink("Edit", "Edit", new { id = item.TicketID })
+                    @Html.ActionLink("Details", "Details", new { id = item.TicketID }) 
                     @Html.ActionLink("Delete", "Delete", new { id = item.TicketID })
                 </td>
                 <td>
