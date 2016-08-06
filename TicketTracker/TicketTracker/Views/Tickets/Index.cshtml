@@ -6,26 +6,26 @@
     ViewBag.Title = "Tickets";
 
     // Gets the active or resolved parameter or inits the variable if null
-    string ticketType = Request.Params["type"];
-    if (ticketType == null)
-    {
-        ticketType = "Active";
-    }
+    //string ticketType = Request.Params["type"];
+    //if (ticketType == null)
+    //{
+    //    ticketType = "Active";
+    //}
+
+    string ticketType = Request.Params["type"] != null ? Request.Params["type"] : ViewBag.TicketType != null ? ViewBag.TicketType : "Active";
+
 }
 
 <h2>@ticketType Tickets</h2>
 
 @{
     // Switches ticket type for parameter passing with the following form
-    if (ticketType != null)
-    {
-        ticketType = ticketType.Equals("Active") ? "Resolved" : "Active";
-    }
+    string changeType = ticketType.Equals("Active") ? "Resolved" : "Active";
 }
 
-<form class="type-btn" method="get" action="">
-    <input type="hidden" name="type" value=@ticketType />
-    <input type="submit" class="btn btn-primary type-btn" value=@ticketType />
+<form class="type-btn" method="get">
+    <input type="hidden" name="type" value=@changeType />
+    <input type="submit" class="btn btn-primary type-btn" value=@changeType />
 </form><br><br />
 
 <p>
@@ -34,10 +34,10 @@
 <table class="table">
     <tr>
         <th>
-            @Html.ActionLink("ID", "Index", new { column = TicketColumns.Id, sortOrder = (TicketSorting)ViewBag.Sorting })
+            @Html.ActionLink("ID", "Index", new { column = TicketColumns.Id, sortOrder = (TicketSorting)ViewBag.Sorting, type = ticketType })
         </th>
         <th>
-            @Html.ActionLink("Severity", "Index", new { column = TicketColumns.Severity, sortOrder = (TicketSorting)ViewBag.Sorting })
+            @Html.ActionLink("Severity", "Index", new { column = TicketColumns.Severity, sortOrder = (TicketSorting)ViewBag.Sorting, type = ticketType })
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Title)
@@ -49,23 +49,23 @@
             @Html.DisplayNameFor(model => model.Status)
         </th>
         <th>
-            @Html.ActionLink("Creator", "Index", new { column = TicketColumns.Creator, sortOrder = (TicketSorting)ViewBag.Sorting })
+            @Html.ActionLink("Creator", "Index", new { column = TicketColumns.Creator, sortOrder = (TicketSorting)ViewBag.Sorting, type = ticketType })
         </th>
         <th>
-            @Html.ActionLink("Created", "Index", new { column = TicketColumns.Created, sortOrder = (TicketSorting)ViewBag.Sorting })
+            @Html.ActionLink("Created", "Index", new { column = TicketColumns.Created, sortOrder = (TicketSorting)ViewBag.Sorting, type = ticketType })
         </th>
         <th>
-            @Html.ActionLink("Modifier", "Index", new { column = TicketColumns.Modifier, sortOrder = (TicketSorting)ViewBag.Sorting })
+            @Html.ActionLink("Modifier", "Index", new { column = TicketColumns.Modifier, sortOrder = (TicketSorting)ViewBag.Sorting, type = ticketType })
         </th>
         <th>
-            @Html.ActionLink("Modified", "Index", new { column = TicketColumns.Modified, sortOrder = (TicketSorting)ViewBag.Sorting })
+            @Html.ActionLink("Modified", "Index", new { column = TicketColumns.Modified, sortOrder = (TicketSorting)ViewBag.Sorting, type = ticketType })
         </th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
-    if ((ticketType.Equals("Resolved") && item.Status == TicketTracker.Models.TicketTypes.Active) ||
-    (ticketType.Equals("Active") && item.Status == TicketTracker.Models.TicketTypes.Resolved))
+    if ((ticketType.Equals("Resolved") && item.Status == TicketTracker.Models.TicketTypes.Resolved) ||
+    (ticketType.Equals("Active") && item.Status == TicketTracker.Models.TicketTypes.Active))
     {
         <tr>
             <td>
@@ -106,13 +106,11 @@
                 <td>
                     @if (ticketType.Equals("Resolved")) // Determines which link to show
                     {
-
-                        @Html.ActionLink("Resolve", "Resolve", new { id = item.TicketID })
+                        @Html.ActionLink("Active", "Active", new { id = item.TicketID })
                     }
                     else
                     {
-
-                        @Html.ActionLink("Active", "Active", new { id = item.TicketID })
+                        @Html.ActionLink("Resolve", "Resolve", new { id = item.TicketID })
                     }
                 </td>
             }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -7,6 +8,9 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using TicketTracker.Models;
+using System.Net;
+using System.Data.SqlClient;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace TicketTracker.Controllers
 {
@@ -320,6 +324,74 @@ namespace TicketTracker.Controllers
             }
             var result = await UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
             return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
+        }
+
+        //
+        // GET: /Manage/SelectUser
+        [Authorize(Roles = "admin")]
+        public ActionResult SelectUser()
+        {
+            var context = new ApplicationDbContext();
+            var users = context.Users.ToList();
+
+            return View(users);
+        }
+
+        //
+        // GET: /Manage/EditRoles
+        [Authorize(Roles = "admin")]
+        public ActionResult EditRoles(string id, string name)
+        {
+            // Query for the role associated with the user selected
+            var context = new ApplicationDbContext();
+            var sql = @"
+                SELECT AspNetUsers.UserName AS Name, AspNetRoles.Name AS Role
+                FROM AspNetUsers
+                LEFT JOIN AspNetUserRoles ON  AspNetUserRoles.UserId = AspNetUsers.Id 
+                LEFT JOIN AspNetRoles ON AspNetRoles.Id = AspNetUserRoles.RoleId
+                WHERE AspNetUsers.Id = @Id";
+            var idParam = new SqlParameter("Id", id);
+
+            var result = context.Database.SqlQuery<UserWithRole>(sql, idParam).ToList();
+            result[0].Id = id;
+            if (result[0].Role == null)
+            {
+                // Ensure the role is not null
+                result[0].Role = "user";
+            }
+
+            string role = result[0].Role;
+
+            // Send a list of all of the available roles to the edit roles page
+            ViewBag.Roles = new SelectList(context.Roles.ToList(), "Name", "Name");
+            return View(result[0]);
+        }
+
+        //
+        // POST: /Manage/EditRoles
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
+        public async Task<ActionResult> EditRoles([Bind(Include = "Id, Name, Role")] UserWithRole user)
+        {
+            if (ModelState.IsValid)
+            {
+                var userStore = new UserStore<IdentityUser>();
+                var manager = new UserManager<IdentityUser>(userStore);
+                var context = new ApplicationDbContext();
+
+                // Delete the user roles and add the newly selected role
+                var result = context.Database.SqlQuery<UserWithRole>("Select Name AS Role From AspNetRoles").ToList();
+                foreach (var role in result)
+                {
+                    await manager.RemoveFromRoleAsync(user.Id, role.Role.ToString());
+                }
+                
+                await manager.AddToRoleAsync(user.Id, user.Role);
+
+                return RedirectToAction("SelectUser");
+            }
+            return View("Index");
         }
 
         protected override void Dispose(bool disposing)

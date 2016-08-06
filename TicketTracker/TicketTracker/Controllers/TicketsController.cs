@@ -17,10 +17,11 @@ namespace TicketTracker.Controllers
 
         // GET: Tickets
         public ActionResult Index(TicketColumns column = TicketColumns.Created, 
-            TicketSorting sortOrder = TicketSorting.CredAsc)
+            TicketSorting sortOrder = TicketSorting.CredAsc, string type = "")
         {       
             var tickets = from t in db.Tickets select t;
             ViewBag.Sorting = sortOrder;
+            ViewBag.TicketType = string.IsNullOrEmpty(type) ? type = "Active" : type;
 
             // Sorts the Tickets according to the sorting option selected
             switch (column)
@@ -136,7 +137,7 @@ namespace TicketTracker.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "admin")]
-        public ActionResult Edit([Bind(Include = "TicketID,Severity,Title,Description,Status,Creator,Created,Modifier,Modified")] Ticket ticket)
+        public ActionResult Edit([Bind(Include = "TicketID,Severity,Title,Description,Status,Creator,Created")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {

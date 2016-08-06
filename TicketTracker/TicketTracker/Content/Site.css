@@ -28,6 +28,6 @@ textarea {
     max-width: 280px;
 }
 
-.noedit dd{
-    margin-bottom: 20px;
+.noedit{
+    margin-left: 16px;
 }

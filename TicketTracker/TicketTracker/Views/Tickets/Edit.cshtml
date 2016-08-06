@@ -16,6 +16,9 @@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.TicketID)
+        @Html.HiddenFor(model => model.Status)
+        @Html.HiddenFor(model => model.Created)
+        @Html.HiddenFor(model => model.Creator)
 
         <div class="form-group">
             @Html.LabelFor(model => model.Severity, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -41,47 +44,40 @@
             </div>
         </div>
 
-        <dl class="noedit">
-            <dt>
-                @Html.DisplayNameFor(model => model.Status)
-            </dt>
-
-            <dd>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 noedit">
                 @Html.DisplayFor(model => model.Status)
-            </dd>
+            </div>
+        </div>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.Creator)
-            </dt>
-
-            <dd>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Creator, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 noedit">
                 @Html.DisplayFor(model => model.Creator)
-            </dd>
+            </div>
+        </div>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.Created)
-            </dt>
-
-            <dd>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Created, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 noedit">
                 @Html.DisplayFor(model => model.Created)
-            </dd>
+            </div>
+        </div>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.Modifier)
-            </dt>
-
-            <dd>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Modifier, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 noedit">
                 @Html.DisplayFor(model => model.Modifier)
-            </dd>
+            </div>
+        </div>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.Modified)
-            </dt>
-
-            <dd>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 noedit">
                 @Html.DisplayFor(model => model.Modified)
-            </dd>
-        </dl>
+            </div>
+        </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
