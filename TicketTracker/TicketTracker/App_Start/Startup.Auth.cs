@@ -6,6 +6,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using TicketTracker.Models;
+using System.Configuration;
 
 namespace TicketTracker
 {
@@ -60,9 +61,8 @@ namespace TicketTracker
 
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {
-                // Move this info to an external file, not included in source code, after preview
-                ClientId = "740832523397-kjka9dk12sturvu6ccu8hsplo2a6cco6.apps.googleusercontent.com",
-                ClientSecret = "EHHGTxt8MKFBbUli5eB7OMRX"
+                ClientId = ConfigurationManager.AppSettings["GoogClientID"],
+                ClientSecret = ConfigurationManager.AppSettings["GoogClientSecret"]
             });
         }
     }

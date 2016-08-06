@@ -11,6 +11,11 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using TicketTracker.Models;
+using SendGrid;
+using System.Net;
+using System.Net.Mail;
+using System.Configuration;
+using System.Diagnostics;
 
 namespace TicketTracker
 {
@@ -20,7 +25,39 @@ namespace TicketTracker
         {
             // Plug in your email service here to send an email.
             return Task.FromResult(0);
+            //await configSendGridasync(message);
         }
+
+    //    // SendGrid (Basic C# client lib) 
+    //    private async Task configSendGridasync(IdentityMessage message)
+    //    {
+    //        var myMessage = new SendGridMessage();
+    //        myMessage.AddTo(message.Destination);
+    //        myMessage.From = new System.Net.Mail.MailAddress(
+    //                            "randomsinproductions.com", "RSP");
+    //        myMessage.Subject = message.Subject;
+    //        myMessage.Text = message.Body;
+    //        myMessage.Html = message.Body;
+
+    //        var credentials = new NetworkCredential(
+    //                   ConfigurationManager.AppSettings["mailAccount"],
+    //                   ConfigurationManager.AppSettings["mailPassword"]
+    //                   );
+
+    //        // Create a Web transport for sending email.
+    //        var transportWeb = new Web(credentials);
+
+    //        // Send the email.
+    //        if (transportWeb != null)
+    //        {
+    //            await transportWeb.DeliverAsync(myMessage);
+    //        }
+    //        else
+    //        {
+    //            Trace.TraceError("Failed to create Web transport.");
+    //            await Task.FromResult(0);
+    //        }
+    //    }
     }
 
     public class SmsService : IIdentityMessageService
