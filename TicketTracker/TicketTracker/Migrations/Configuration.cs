@@ -40,6 +40,7 @@ namespace TicketTracker.Migrations
             {
                 UserName = "admin1@email.com",
                 Email = "admin1@email.com",
+                EmailConfirmed = true
             };
             ir = um.Create(user, "admin1pswrd");
             if (ir.Succeeded == false)

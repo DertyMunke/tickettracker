@@ -76,6 +76,7 @@ namespace TicketTracker.Controllers
         }
 
         // GET: Tickets/Details/5
+        [Authorize(Roles = "admin, user")]
         public ActionResult Details(int? id)
         {
             if (id == null)
