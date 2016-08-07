@@ -16,48 +16,57 @@ using System.Net;
 using System.Net.Mail;
 using System.Configuration;
 using System.Diagnostics;
+using SendGrid.Helpers.Mail;
+using System.Net.Mime;
 
 namespace TicketTracker
 {
     public class EmailService : IIdentityMessageService
     {
-        public Task SendAsync(IdentityMessage message)
-        {
+        public async Task SendAsync(IdentityMessage message)
+        {           
             // Plug in your email service here to send an email.
-            return Task.FromResult(0);
-            //await configSendGridasync(message);
+            await configSendGridasync(message);
         }
 
-    //    // SendGrid (Basic C# client lib) 
-    //    private async Task configSendGridasync(IdentityMessage message)
-    //    {
-    //        var myMessage = new SendGridMessage();
-    //        myMessage.AddTo(message.Destination);
-    //        myMessage.From = new System.Net.Mail.MailAddress(
-    //                            "randomsinproductions.com", "RSP");
-    //        myMessage.Subject = message.Subject;
-    //        myMessage.Text = message.Body;
-    //        myMessage.Html = message.Body;
+        // SendGrid (Basic C# client lib) 
+        private async Task configSendGridasync(IdentityMessage message)
+        {
+            try
+            {
+                // Create message
+                var myMessage = new MailMessage();
+                myMessage.To.Add(message.Destination);
+                myMessage.From = new MailAddress("randomsinproductions@gmail.com", "RSP");
+                myMessage.Subject = message.Subject;
 
-    //        var credentials = new NetworkCredential(
-    //                   ConfigurationManager.AppSettings["mailAccount"],
-    //                   ConfigurationManager.AppSettings["mailPassword"]
-    //                   );
+                myMessage.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(message.Body, null, MediaTypeNames.Text.Plain));
+                myMessage.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(message.Body, null, MediaTypeNames.Text.Html));
 
-    //        // Create a Web transport for sending email.
-    //        var transportWeb = new Web(credentials);
+                // Setup credentials for Azure SendGrid
+                SmtpClient smtpClient = new SmtpClient("smtp.sendgrid.net", Convert.ToInt32(587));
+                var credentials = new NetworkCredential(
+                           ConfigurationManager.AppSettings["mailAccount"],
+                           ConfigurationManager.AppSettings["mailPassword"]
+                           );
+                smtpClient.Credentials = credentials;
 
-    //        // Send the email.
-    //        if (transportWeb != null)
-    //        {
-    //            await transportWeb.DeliverAsync(myMessage);
-    //        }
-    //        else
-    //        {
-    //            Trace.TraceError("Failed to create Web transport.");
-    //            await Task.FromResult(0);
-    //        }
-    //    }
+                //// Send the email.
+                if (smtpClient.Credentials != null)
+                {                    
+                    await smtpClient.SendMailAsync(myMessage);
+                }
+                else
+                {
+                    Trace.TraceError("Failed to create Web transport.");
+                    await Task.FromResult(0);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+        }
     }
 
     public class SmsService : IIdentityMessageService
