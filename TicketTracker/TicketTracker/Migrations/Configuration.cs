@@ -60,6 +60,7 @@ namespace TicketTracker.Migrations
             context.Tickets.AddOrUpdate(p => p.Title,
                 new Ticket
                 {
+                    App = AppNames.Other,
                     Severity = SeverityTypes.High,
                     Title = "Broken",
                     Description = "The whole thing broke.",
@@ -71,6 +72,7 @@ namespace TicketTracker.Migrations
                 },
                 new Ticket
                 {
+                    App = AppNames.RedHareGames,
                     Severity = SeverityTypes.Low,
                     Title = "The thing",
                     Description = "It did stuff.",
@@ -82,6 +84,7 @@ namespace TicketTracker.Migrations
                 },
                 new Ticket
                 {
+                    App = AppNames.RedHareGames,
                     Severity = SeverityTypes.Critical,
                     Title = "Gears",
                     Description = "There is no more grease on the gears.",
@@ -94,6 +97,7 @@ namespace TicketTracker.Migrations
                 },
                 new Ticket
                 {
+                    App = AppNames.ServerPro,
                     Severity = SeverityTypes.Medium,
                     Title = "Crashing",
                     Description = "The login keeps crashing.",

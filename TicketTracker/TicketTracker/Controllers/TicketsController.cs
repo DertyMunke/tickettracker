@@ -32,6 +32,12 @@ namespace TicketTracker.Controllers
                     tickets = ViewBag.Sorting == TicketSorting.IdDsc ?
                         tickets.OrderBy(t => t.TicketID) : tickets.OrderByDescending(t => t.TicketID);
                     break;
+                case TicketColumns.App:
+                    ViewBag.Sorting = sortOrder == TicketSorting.AppAsc ?
+                        TicketSorting.AppDsc : TicketSorting.AppAsc;
+                    tickets = ViewBag.Sorting == TicketSorting.AppDsc ?
+                        tickets.OrderBy(t => t.App) : tickets.OrderByDescending(t => t.App);
+                    break;
                 case TicketColumns.Severity:
                     ViewBag.Sorting = sortOrder == TicketSorting.SevAsc ?
                         TicketSorting.SevDsc : TicketSorting.SevAsc;
@@ -97,7 +103,7 @@ namespace TicketTracker.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "admin, user")]
-        public ActionResult Create([Bind(Include = "TicketID,Severity,Title,Description,Status,Creator,Created,Modifier,Modified")] Ticket ticket)
+        public ActionResult Create([Bind(Include = "TicketID,App,Severity,Title,Description,Status,Creator,Created,Modifier,Modified")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
@@ -137,7 +143,7 @@ namespace TicketTracker.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "admin")]
-        public ActionResult Edit([Bind(Include = "TicketID,Severity,Title,Description,Status,Creator,Created")] Ticket ticket)
+        public ActionResult Edit([Bind(Include = "TicketID,App,Severity,Title,Description,Status,Creator,Created")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
@@ -243,6 +249,8 @@ namespace TicketTracker.Controllers
         none,
         IdAsc,
         IdDsc,
+        AppAsc,
+        AppDsc,
         SevAsc,
         SevDsc,
         StaAsc,

@@ -37,6 +37,9 @@
             @Html.ActionLink("ID", "Index", new { column = TicketColumns.Id, sortOrder = (TicketSorting)ViewBag.Sorting, type = ticketType })
         </th>
         <th>
+            @Html.ActionLink("App", "Index", new { column = TicketColumns.App, sortOrder = (TicketSorting)ViewBag.Sorting, type = ticketType })
+        </th>
+        <th>
             @Html.ActionLink("Severity", "Index", new { column = TicketColumns.Severity, sortOrder = (TicketSorting)ViewBag.Sorting, type = ticketType })
         </th>
         <th>
@@ -70,6 +73,9 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.TicketID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.App)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Severity)

@@ -18,6 +18,13 @@ namespace TicketTracker.Models
         /// The levels of importance of the ticket
         /// </summary>
         [Required]
+        [EnumDataType(typeof(AppNames))]
+        public AppNames App { get; set; }
+
+        /// <summary>
+        /// The levels of importance of the ticket
+        /// </summary>
+        [Required]
         [EnumDataType(typeof(SeverityTypes))]
         public SeverityTypes Severity { get; set; }
 
@@ -81,6 +88,7 @@ namespace TicketTracker.Models
     public enum TicketColumns
     {
         Id,
+        App,
         Severity,
         Title,
         Description,
@@ -90,4 +98,9 @@ namespace TicketTracker.Models
         Modifier,
         Modified
     }
+
+    /// <summary>
+    /// Names of available apps to create a ticket for
+    /// </summary>
+    public enum AppNames { RedHareGames, ServerPro, Other }
 }
